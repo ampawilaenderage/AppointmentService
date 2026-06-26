@@ -1,0 +1,57 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+
+jobs:
+
+  # ── Run all .NET tests ─────────────────────────────────────────
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore AppointmentService.slnx
+
+      - name: Build solution
+        run: dotnet build AppointmentService.slnx --no-restore --configuration Release
+
+      - name: Run UserService tests
+        run: dotnet test UserService.Tests/UserService.Tests.csproj --no-build --configuration Release --verbosity normal
+
+      - name: Run AppointmentService tests
+        run: dotnet test AppointmentService.Tests/AppointmentService.Tests.csproj --no-build --configuration Release --verbosity normal
+
+  # ── Build Docker images ────────────────────────────────────────
+  docker:
+    name: Build Docker Images
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build UserService image
+        run: docker build -f UserService/Dockerfile -t userservice .
+
+      - name: Build AppointmentService image
+        run: docker build -f AppointmentService/Dockerfile -t appointmentservice .
+
+      - name: Build NotificationService image
+        run: docker build -f NotificationService/Dockerfile -t notificationservice .
+
+      - name: Build Frontend image
+        run: docker build -f Frontend/Dockerfile -t frontend ./Frontend
