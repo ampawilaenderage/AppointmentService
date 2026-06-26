@@ -1,0 +1,259 @@
+<main class="shell">
+  <section class="brand-panel">
+    <div>
+      <p class="eyebrow">Appointment Portal</p>
+      <h1>Book appointments with your registered profile.</h1>
+    </div>
+  </section>
+
+  <section class="workspace">
+    <ng-container *ngIf="!currentUser; else dashboard">
+
+      <!-- TABS -->
+      <div class="tabs">
+        <button type="button" [class.active]="mode === 'login'"    (click)="switchMode('login')">Login</button>
+        <button type="button" [class.active]="mode === 'register'" (click)="switchMode('register')">Register</button>
+      </div>
+
+      <!-- LOGIN -->
+      <form *ngIf="mode === 'login'" class="form" (ngSubmit)="login()">
+        <label>User ID
+          <input name="loginUserId" [(ngModel)]="loginModel.userId" required>
+        </label>
+        <label>Password
+          <input name="loginPassword" type="password" [(ngModel)]="loginModel.password" required>
+        </label>
+        <button class="primary" type="submit">Login</button>
+      </form>
+
+      <!-- REGISTER -->
+      <form *ngIf="mode === 'register'" class="form" (ngSubmit)="register()">
+        <div class="grid">
+          <label>First name
+            <input name="firstName" [(ngModel)]="registerModel.firstName" required>
+          </label>
+          <label>Last name
+            <input name="lastName" [(ngModel)]="registerModel.lastName" required>
+          </label>
+        </div>
+
+        <div class="grid">
+          <label>Gender
+            <select name="gender" [(ngModel)]="registerModel.gender" required>
+              <option value="" disabled>Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </label>
+          <label>Age
+            <input name="age" type="number" min="1" max="120" [(ngModel)]="registerModel.age" required>
+          </label>
+        </div>
+
+        <label>User ID
+          <input name="registerUserId" [(ngModel)]="registerModel.userId" required>
+        </label>
+        <label>Email
+          <input name="email" type="email" [(ngModel)]="registerModel.email" required>
+        </label>
+        <label>Password
+          <input name="registerPassword" type="password" [(ngModel)]="registerModel.password" required>
+        </label>
+        <label>Role
+          <select name="role" [(ngModel)]="registerModel.role">
+            <option value="Patient">Patient</option>
+            <option value="Doctor">Doctor</option>
+          </select>
+        </label>
+        <label *ngIf="registerModel.role === 'Doctor'">Specialization
+          <select name="specialization" [(ngModel)]="registerModel.specialization" required>
+            <option value="" disabled>Select specialization</option>
+            <option *ngFor="let p of problemTypes" [value]="p.specialization">{{ p.specialization }}</option>
+          </select>
+        </label>
+
+        <button class="primary" type="submit">Create account</button>
+      </form>
+    </ng-container>
+
+    <!-- ═══════════════ DASHBOARD ═══════════════ -->
+    <ng-template #dashboard>
+
+      <div class="dashboard-header">
+        <div>
+          <p class="eyebrow">Signed in as {{ currentUser?.role }}</p>
+          <h2>{{ currentUser?.fullName }}</h2>
+          <p>
+            {{ currentUser?.email }} · {{ currentUser?.userId }}
+            <span *ngIf="currentUser?.specialization"> · {{ currentUser?.specialization }}</span>
+          </p>
+        </div>
+        <button type="button" class="secondary" (click)="logout()">Logout</button>
+      </div>
+
+      <div class="detail-grid">
+        <!-- User details -->
+        <section>
+          <h3>Profile</h3>
+          <dl>
+            <div><dt>Role</dt><dd>{{ currentUser?.role }}</dd></div>
+            <div *ngIf="currentUser?.specialization"><dt>Specialization</dt><dd>{{ currentUser?.specialization }}</dd></div>
+            <div><dt>Gender</dt><dd>{{ currentUser?.gender }}</dd></div>
+            <div><dt>Age</dt><dd>{{ currentUser?.age }}</dd></div>
+            <div><dt>User ID</dt><dd>{{ currentUser?.userId }}</dd></div>
+          </dl>
+        </section>
+
+        <!-- ── PATIENT: book appointment ── -->
+        <section *ngIf="!isDoctor">
+          <h3>Book appointment</h3>
+          <form class="form compact" (ngSubmit)="createAppointment()">
+
+            <label>Problem type
+              <select name="problemType" [(ngModel)]="appointmentModel.problemType"
+                      (ngModelChange)="onProblemTypeChange()" required>
+                <option value="" disabled>Select problem type</option>
+                <option *ngFor="let p of problemTypes" [value]="p.label">{{ p.label }}</option>
+              </select>
+            </label>
+
+            <label *ngIf="appointmentModel.problemType">Doctor
+              <select name="doctorId" [(ngModel)]="appointmentModel.doctorId" required>
+                <option [ngValue]="null" disabled>Select a doctor</option>
+                <option *ngFor="let d of availableDoctors" [ngValue]="d.id">
+                  Dr. {{ d.firstName }} {{ d.lastName }}
+                </option>
+              </select>
+              <small *ngIf="availableDoctors.length === 0" class="hint">No doctors available for this problem type.</small>
+            </label>
+
+            <div class="grid">
+              <label>Date
+                <input name="appointmentDate" type="date" [(ngModel)]="appointmentModel.date" [min]="today" required>
+              </label>
+              <label>Time
+                <select name="appointmentTime" [(ngModel)]="appointmentModel.time" required>
+                  <option value="" disabled>Select time</option>
+                  <option *ngFor="let slot of timeSlots" [value]="slot.value">{{ slot.label }}</option>
+                </select>
+              </label>
+            </div>
+
+            <button class="primary" type="submit">Book appointment</button>
+          </form>
+        </section>
+      </div>
+
+      <!-- ── PATIENT: appointments list ── -->
+      <section *ngIf="!isDoctor" class="appointments">
+        <div class="section-title">
+          <h3>Your appointments</h3>
+          <button type="button" class="secondary" (click)="refresh()">Refresh</button>
+        </div>
+
+        <p *ngIf="appointments.length === 0" class="empty">No appointments yet.</p>
+        <table *ngIf="appointments.length > 0">
+          <thead>
+            <tr><th>ID</th><th>Problem type</th><th>Doctor</th><th>Time</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let a of appointments">
+              <td>{{ a.id }}</td>
+              <td>{{ a.problemType }}</td>
+              <td>{{ getDoctorName(a.doctorId) }}</td>
+              <td>{{ a.time | date:'medium' }}</td>
+              <td><span class="status-badge" [class.confirmed]="a.status === 'Confirmed'" [class.pending]="a.status === 'Pending'">{{ a.status }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ── DOCTOR: 3-month calendar ── -->
+      <section *ngIf="isDoctor" class="doctor-section">
+        <div class="section-title">
+          <h3>Appointments — next 3 months</h3>
+          <button type="button" class="secondary" (click)="refresh()">Refresh</button>
+        </div>
+
+        <div class="calendar-wrapper">
+          <div *ngFor="let month of calendarMonths" class="cal-month">
+            <h4 class="cal-month-title">{{ month.label }}</h4>
+            <div class="cal-grid">
+              <div *ngFor="let d of dayLabels" class="cal-head">{{ d }}</div>
+              <ng-container *ngFor="let week of month.weeks">
+                <ng-container *ngFor="let day of week">
+                  <div *ngIf="day === null" class="cal-cell empty-cell"></div>
+                  <div *ngIf="day !== null"
+                       class="cal-cell"
+                       [class.today]="day.isToday"
+                       [class.has-appt]="day.hasAppointments"
+                       [class.selected]="day.dateStr === selectedDateStr || day.dateStr === pendingDateStr"
+                       [class.past]="day.isPast"
+                       (click)="day.hasAppointments ? pickDay(day.dateStr) : null">
+                    {{ day.dayNum }}
+                    <span *ngIf="day.hasAppointments" class="appt-dot"></span>
+                  </div>
+                </ng-container>
+              </ng-container>
+            </div>
+
+            <!-- OK button appears inside this month box when a date in it is pending -->
+            <div *ngIf="pendingDateStr && pendingDateStr.startsWith(monthPrefix(month))"
+                 class="cal-ok-bar">
+              <span>{{ pendingDateStr | date:'mediumDate' }}</span>
+              <div class="ok-bar-actions">
+                <button class="primary small" (click)="confirmDay()">OK</button>
+                <button class="secondary small" (click)="clearSelection()">Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Day detail panel -->
+        <div *ngIf="selectedDateStr" class="day-panel">
+          <div class="day-panel-header">
+            <h4>{{ selectedDateStr | date:'fullDate' }}</h4>
+            <button type="button" class="secondary small" (click)="clearSelection()">Close</button>
+          </div>
+
+          <div *ngFor="let a of selectedDayAppointments" class="appt-card">
+            <div class="appt-card-left">
+              <span class="appt-time">{{ a.time | date:'shortTime' }}</span>
+              <span class="appt-problem">{{ a.problemType }}</span>
+            </div>
+            <div class="appt-card-right">
+              <strong>{{ a.patientName }}</strong>
+              <span class="appt-id">Patient #{{ a.userId }}</span>
+            </div>
+            <div class="appt-card-actions">
+              <span class="status-badge"
+                    [class.confirmed]="a.status === 'Confirmed'"
+                    [class.pending]="a.status === 'Pending'"
+                    [class.cancelled]="a.status === 'Cancelled'">{{ a.status }}</span>
+
+              <!-- normal action buttons -->
+              <ng-container *ngIf="confirmingCancelId !== a.id">
+                <button *ngIf="a.status === 'Pending'" class="primary small" (click)="approve(a)">Confirm</button>
+                <button *ngIf="a.status !== 'Cancelled'" class="cancel small" (click)="requestCancel(a)">Cancel</button>
+              </ng-container>
+
+              <!-- inline confirmation prompt -->
+              <ng-container *ngIf="confirmingCancelId === a.id">
+                <span class="confirm-msg">Cancel this appointment?</span>
+                <button class="cancel small" (click)="confirmCancel(a)">Yes, cancel</button>
+                <button class="secondary small" (click)="dismissCancel()">No</button>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+        <p *ngIf="appointments.length === 0" class="empty">No appointments in the next 3 months.</p>
+      </section>
+
+    </ng-template>
+
+    <p *ngIf="message" class="message">{{ message }}</p>
+    <p *ngIf="error"   class="error">{{ error }}</p>
+  </section>
+</main>

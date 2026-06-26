@@ -1,0 +1,17 @@
+C:\Users\ampaw\source\repos\AppointmentService\Shared\bin\Debug\net10.0\Shared.deps.json
+C:\Users\ampaw\source\repos\AppointmentService\Shared\bin\Debug\net10.0\Shared.dll
+C:\Users\ampaw\source\repos\AppointmentService\Shared\bin\Debug\net10.0\Shared.pdb
+C:\Users\ampaw\source\repos\AppointmentService\Shared\obj\Debug\net10.0\Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ampaw\source\repos\AppointmentService\Shared\obj\Debug\net10.0\Shared.AssemblyInfoInputs.cache
+C:\Users\ampaw\source\repos\AppointmentService\Shared\obj\Debug\net10.0\Shared.AssemblyInfo.cs
+C:\Users\ampaw\source\repos\AppointmentService\Shared\obj\Debug\net10.0\Shared.csproj.CoreCompileInputs.cache
+C:\Users\ampaw\source\repos\AppointmentService\Shared\obj\Debug\net10.0\Shared.dll
+C:\Users\ampaw\source\repos\AppointmentService\Shared\obj\Debug\net10.0\refint\Shared.dll
+C:\Users\ampaw\source\repos\AppointmentService\Shared\obj\Debug\net10.0\Shared.pdb
+C:\Users\ampaw\source\repos\AppointmentService\Shared\obj\Debug\net10.0\ref\Shared.dll
+C:\tmp\AppointmentServiceBuild\UserService\Shared.deps.json
+C:\tmp\AppointmentServiceBuild\UserService\Shared.dll
+C:\tmp\AppointmentServiceBuild\UserService\Shared.pdb
+C:\tmp\AppointmentServiceBuild\AppointmentService\Shared.deps.json
+C:\tmp\AppointmentServiceBuild\AppointmentService\Shared.dll
+C:\tmp\AppointmentServiceBuild\AppointmentService\Shared.pdb

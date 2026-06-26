@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\ampaw\\\\source\\\\repos\\\\AppointmentService\" -Recurse -Force)",
+      "Bash(Select-Object FullName, PSIsContainer)",
+      "Bash(ConvertTo-Json)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\ampaw\\\\source\\\\repos\\\\AppointmentService\\\\AppointmentService\\\\WeatherForecast.cs\" -Force)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\ampaw\\\\source\\\\repos\\\\AppointmentService\\\\Shared\\\\Contracts\\\\Example.cs\" -Force)",
+      "Bash(Remove-Item \"C:\\\\Users\\\\ampaw\\\\source\\\\repos\\\\AppointmentService\\\\NotificationService\\\\Worker.cs\" -Force)",
+      "mcp__Claude_in_Chrome__navigate",
+      "mcp__visualize__read_me",
+      "mcp__visualize__show_widget"
+    ]
+  }
+}

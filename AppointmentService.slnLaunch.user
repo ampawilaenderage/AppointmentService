@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "UserService\\UserService.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "AppointmentService\\AppointmentService.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "NotificationService\\NotificationService.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "Frontend\\Frontend.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

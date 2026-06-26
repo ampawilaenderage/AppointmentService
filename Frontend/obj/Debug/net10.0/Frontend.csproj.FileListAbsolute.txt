@@ -1,0 +1,11 @@
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\bin\Debug\net10.0\Frontend.deps.json
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\bin\Debug\net10.0\Frontend.dll
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\bin\Debug\net10.0\Frontend.pdb
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\obj\Debug\net10.0\Frontend.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\obj\Debug\net10.0\Frontend.AssemblyInfoInputs.cache
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\obj\Debug\net10.0\Frontend.AssemblyInfo.cs
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\obj\Debug\net10.0\Frontend.csproj.CoreCompileInputs.cache
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\obj\Debug\net10.0\Frontend.dll
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\obj\Debug\net10.0\refint\Frontend.dll
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\obj\Debug\net10.0\Frontend.pdb
+C:\Users\ampaw\source\repos\AppointmentService\Frontend\obj\Debug\net10.0\ref\Frontend.dll

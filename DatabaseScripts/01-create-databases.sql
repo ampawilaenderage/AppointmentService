@@ -1,0 +1,8 @@
+CREATE DATABASE UserDb;
+GO
+
+CREATE DATABASE AppointmentDb;
+GO
+
+CREATE DATABASE NotificationDb;
+GO

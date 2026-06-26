@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json.schemastore.org/launchsettings.json",
+  "profiles": {
+    "Frontend": {
+      "commandName": "Executable",
+      "executablePath": "C:\\Program Files\\nodejs\\npm.cmd",
+      "commandLineArgs": "start",
+      "workingDirectory": "$(ProjectDir)",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:4200"
+    }
+  }
+}

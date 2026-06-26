@@ -1,0 +1,51 @@
+Create 4 projects as microservices
+Choose Multiple startup projects
+set project references
+Install-Package Microsoft.EntityFrameworkCore.Design
+Installed  RabbitMQ manually:        https://www.rabbitmq.com/download.html
+Install-Package Swashbuckle.AspNetCore     =========== Install the Swagger NuGet package
+
+Add-Migration InitialCreate
+Update-Database
+
+✔ RabbitMQ is working
+✔ MassTransit is working
+✔ Publishing messages works
+✔ NotificationService consumes messages
+✔ All services run independently
+✔ End-to-end microservice architecture is functional
+
+
+
+Step 1
+
+You send a POST request to create a user.
+
+Step 2
+
+UserService publishes a UserCreatedMessage to RabbitMQ.
+
+Step 3
+
+RabbitMQ stores the message in a queue.
+
+Step 4
+
+NotificationService is watching the queue.
+
+Step 5
+
+NotificationService receives the message.
+
+Step 6
+
+NotificationService processes it
+(e.g., logs → sends email → sends SMS)
+
+Step 7
+
+You can see everything happening in:
+
+RabbitMQ Management UI
+
+NotificationService console

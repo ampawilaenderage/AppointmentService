@@ -1,0 +1,4 @@
+http://localhost:15672/#/          RabbitMQ
+
+https://localhost:7284/swagger          userservice
+https://localhost:7290/swagger

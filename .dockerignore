@@ -1,0 +1,9 @@
+**/.vs
+**/.git
+**/bin
+**/obj
+**/*.user
+**/node_modules
+Frontend/
+**/UserService.Tests
+**/AppointmentService.Tests
