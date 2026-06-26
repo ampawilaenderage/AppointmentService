@@ -23,6 +23,6 @@
 
   <Target Name="NpmBuild" AfterTargets="Build">
     <Exec Command="npm.cmd run build" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
-    <Exec Command="npm run build"     Condition="$([MSBuild]::IsOSPlatform('Linux')) Or $([MSBuild]::IsOSPlatform('OSX'))" />
+    <Exec Command="npx ng build"      Condition="$([MSBuild]::IsOSPlatform('Linux')) Or $([MSBuild]::IsOSPlatform('OSX'))" />
   </Target>
 </Project>
