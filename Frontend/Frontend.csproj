@@ -16,13 +16,11 @@
     <None Include="src\**\*" />
   </ItemGroup>
 
-  <Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('node_modules')">
-    <Exec Command="npm.cmd install" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
-    <Exec Command="npm install"     Condition="$([MSBuild]::IsOSPlatform('Linux')) Or $([MSBuild]::IsOSPlatform('OSX'))" />
+  <Target Name="NpmInstall" BeforeTargets="Build" Condition="$([MSBuild]::IsOSPlatform('Windows')) And !Exists('node_modules')">
+    <Exec Command="npm.cmd install" />
   </Target>
 
-  <Target Name="NpmBuild" AfterTargets="Build">
-    <Exec Command="npm.cmd run build" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
-    <Exec Command="npx ng build"      Condition="$([MSBuild]::IsOSPlatform('Linux')) Or $([MSBuild]::IsOSPlatform('OSX'))" />
+  <Target Name="NpmBuild" AfterTargets="Build" Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+    <Exec Command="npm.cmd run build" />
   </Target>
 </Project>
