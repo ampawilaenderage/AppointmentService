@@ -22,6 +22,15 @@ jobs:
         with:
           dotnet-version: '10.0.x'
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Frontend dependencies
+        run: npm install
+        working-directory: Frontend
+
       - name: Restore dependencies
         run: dotnet restore AppointmentService.slnx
 
