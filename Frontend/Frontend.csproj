@@ -17,10 +17,12 @@
   </ItemGroup>
 
   <Target Name="NpmInstall" BeforeTargets="Build" Condition="!Exists('node_modules')">
-    <Exec Command="npm.cmd install" />
+    <Exec Command="npm.cmd install" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
+    <Exec Command="npm install"     Condition="$([MSBuild]::IsOSPlatform('Linux')) Or $([MSBuild]::IsOSPlatform('OSX'))" />
   </Target>
 
   <Target Name="NpmBuild" AfterTargets="Build">
-    <Exec Command="npm.cmd run build" />
+    <Exec Command="npm.cmd run build" Condition="$([MSBuild]::IsOSPlatform('Windows'))" />
+    <Exec Command="npm run build"     Condition="$([MSBuild]::IsOSPlatform('Linux')) Or $([MSBuild]::IsOSPlatform('OSX'))" />
   </Target>
 </Project>
