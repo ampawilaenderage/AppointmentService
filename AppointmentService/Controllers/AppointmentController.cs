@@ -36,7 +36,7 @@ namespace AppointmentService.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] Appointment appointment)
         {
-            appointment.Status = "Pending";
+            appointment.Status = "Confirmed";
             _db.Appointments.Add(appointment);
             await _db.SaveChangesAsync();
 
