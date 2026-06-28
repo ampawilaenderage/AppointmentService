@@ -20,8 +20,8 @@ services:
   rabbitmq:
     image: rabbitmq:3-management
     ports:
-      - "5672:5672"    # app connections
-      - "15672:15672"  # management UI  →  http://localhost:15672
+      - "5672:5672"
+      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
@@ -33,9 +33,7 @@ services:
 
   # ── UserService ────────────────────────────────────────────────
   userservice:
-    build:
-      context: .
-      dockerfile: UserService/Dockerfile
+    image: esajith/userservice:latest
     ports:
       - "7284:8080"
     environment:
@@ -53,9 +51,7 @@ services:
 
   # ── AppointmentService ─────────────────────────────────────────
   appointmentservice:
-    build:
-      context: .
-      dockerfile: AppointmentService/Dockerfile
+    image: esajith/appointmentservice:latest
     ports:
       - "7104:8080"
     environment:
@@ -73,9 +69,7 @@ services:
 
   # ── NotificationService ────────────────────────────────────────
   notificationservice:
-    build:
-      context: .
-      dockerfile: NotificationService/Dockerfile
+    image: esajith/notificationservice:latest
     environment:
       DOTNET_ENVIRONMENT: Production
       ConnectionStrings__DefaultConnection: "Server=sqlserver;Database=NotificationDb;User Id=sa;Password=Sa@12345;TrustServerCertificate=True;"
@@ -90,15 +84,14 @@ services:
 
   # ── Frontend ──────────────────────────────────────────────────
   frontend:
-    build:
-      context: ./Frontend
-      dockerfile: Dockerfile
+    image: esajith/frontend:latest
     ports:
       - "4200:80"
     depends_on:
       - userservice
       - appointmentservice
 
+  # ── Adminer ───────────────────────────────────────────────────
   adminer:
     image: adminer
     ports:
